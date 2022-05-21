@@ -49,7 +49,7 @@ function startAudio() {
 }
 
 function setup(){
-  createCanvas(256, 256);
+  createCanvas(768, 768);
   colorMode(HSB);
   angleMode(DEGREES);
 
