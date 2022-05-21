@@ -30,12 +30,12 @@ const AUDIO_SETTINGS = {
   ON: 'on'
 }
 
-const BANDS = 64;
+const BANDS = 256;
 
 let audioIn;
 let currentAudioSetting = AUDIO_SETTINGS.OFF;
 let fft;
-let w;
+// let w;
 
 let volhistory = [];
 
@@ -60,8 +60,6 @@ function setup(){
   button.mousePressed(startAudio);
 
   fft = new p5.FFT(0.9, BANDS);
-
-  w = width / BANDS
 
   // tell fft that the audio input is our mic / audio in 
   fft.setInput(audioIn);
