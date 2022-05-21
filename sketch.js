@@ -40,7 +40,8 @@ function setup(){
   }
 
   if (VISUALIZATION.PERLIN) {
-    createCanvas(400, 400);
+    createCanvas(200, 200);
+    pixelDensity(1);
   }
 
   audioIn = new p5.AudioIn();
@@ -83,35 +84,18 @@ function draw() {
 }
 
 function drawPerlin() {
-  beginShape()
-  stroke(255);
-  noFill();
-  let xoff = start
+  loadPixels();
   for (let x = 0; x < width; x++) {
-    stroke(255);
-    let n = map(noise(xoff), 0, 1, 0, height)
-    // you can also use the sin wave function to get an overall sin wave shape plus perlin noise interference
-    let s = map(sin(xoff), -1, 1, -50, 50)
-    let y  = s + n;
-    // let y = noise(xoff) * height;
-    vertex(x, y);
-    xoff += inc
-  } 
-  endShape();
-
-  start += inc;
-
-  // noLoop();
-
-  // let x = map(noise(xoff1), 0, 1, 0, width);
-  // let y = map(noise(xoff2), 0, 1, 0, height);
-
-  // // You can think about this number as the speed at which its "walking through" that Perlin noise graph
-  // // The bigger the number, the more it jumps ahead, the faster the new position is
-  // xoff1 += 0.02;
-  // xoff2 += 0.02;
-
-  // ellipse(x, y, 24, 24);
+    for (let y = 0; y < height; y++) {
+      let index = (x+y * width) * 4;
+      let r = random(255);
+      pixels[index] = r;
+      pixels[index + 1] = r;
+      pixels[index +2] = r;
+      pixels[index + 3] = 255;
+    }
+  }
+  updatePixels();
 }
 
 function drawCircleSpectrum() {
