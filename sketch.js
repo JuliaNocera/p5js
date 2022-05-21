@@ -60,6 +60,12 @@ function gotSources(deviceList) {
   }
 }
 
+function keyPressed() {
+  if ((key == 'P') || (key == 'p')) {
+  startAudio();
+  }
+}
+
 function draw() {
   background(0);
   if (currentAudioSetting === AUDIO_SETTINGS.ON) {
