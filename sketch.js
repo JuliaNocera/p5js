@@ -16,6 +16,8 @@ let currentAudioSetting = AUDIO_SETTINGS.OFF;
 let currentVisualization = VISUALIZATION.PERLIN;
 let fft;
 
+let xoff = 0;
+
 function startAudio() {
   if(currentAudioSetting === AUDIO_SETTINGS.OFF) {
     audioIn.start()
@@ -71,7 +73,13 @@ function draw() {
 }
 
 function drawPerlin() {
-  ellipse(200, 200, 24, 24);
+  // let x = random(width)
+
+  let x = map(noise(xoff), 0, 1, 0, width);
+
+  xoff += 0.01;
+
+  ellipse(x, 200, 24, 24);
 }
 
 function drawCircleSpectrum() {
