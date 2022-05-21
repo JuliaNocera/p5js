@@ -80,17 +80,26 @@ function draw() {
   if (currentAudioSetting === AUDIO_SETTINGS.ON) {
     let spectrum = fft.analyze()
     noStroke();
+    // translate to the center
+    translate(width / 2, height / 2);
+    beginShape();
     for(let i = 0; i < spectrum.length; i++) {
+      let angle = map(i,0,spectrum.length,0,360);
       let amp = spectrum[i];
-      // range of spectrum array is between 0 & 255
-      let y = map(amp, 0, 255, height, 0);
-
-      // fill bars based on i
-      fill(amp, 255, 255)
-      // subtract 2 from width to give a little space between the lines in visualizer
-      rect(i * w, y, w - 2, height - y)
+      // set the radius to map that amplitude from 0 --> 256 to 40 --> 200
+      let r = map(amp, 0, 256, 40, 200);
+      let x = r * cos(angle);
+      let y = r * sin(angle);
+      vertex(x,y);
+      let color = amp + (Math.floor(Math.random() * 100)) < 255
+        ? amp + (Math.floor(Math.random() * 100))
+        : 255;
+      console.log(color)
+      stroke(color,255,255)
+      line(x,y)
     }
-    // stroke(255);
+    endShape();
+    stroke(255);
     noFill();
   }
 }
