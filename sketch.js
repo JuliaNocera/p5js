@@ -81,15 +81,20 @@ function draw() {
 }
 
 function drawPerlin() {
-  let x = map(noise(xoff1), 0, 1, 0, width);
-  let y = map(noise(xoff2), 0, 1, 0, height);
+  for (let x = 0; x < width; x++) {
+    stroke(255);
+    point(x, 200);
+  } 
 
-  // You can think about this number as the speed at which its "walking through" that Perlin noise graph
-  // The bigger the number, the more it jumps ahead, the faster the new position is
-  xoff1 += 0.02;
-  xoff2 += 0.02;
+  // let x = map(noise(xoff1), 0, 1, 0, width);
+  // let y = map(noise(xoff2), 0, 1, 0, height);
 
-  ellipse(x, y, 24, 24);
+  // // You can think about this number as the speed at which its "walking through" that Perlin noise graph
+  // // The bigger the number, the more it jumps ahead, the faster the new position is
+  // xoff1 += 0.02;
+  // xoff2 += 0.02;
+
+  // ellipse(x, y, 24, 24);
 }
 
 function drawCircleSpectrum() {
