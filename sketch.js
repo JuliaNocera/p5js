@@ -84,16 +84,26 @@ function draw() {
 }
 
 function drawPerlin() {
+  let yoff = 0;
   loadPixels();
-  for (let x = 0; x < width; x++) {
-    for (let y = 0; y < height; y++) {
-      let index = (x+y * width) * 4;
-      let r = random(255);
+  /*
+    if the x loop is outer loop, we get a vertical streak
+    if the y loop is outer loop, we get a horizontal streak
+    
+    changing the increment will make it a more or less smooth blur
+  */
+  for (let y = 0; y < height; y++) {
+    let xoff = 0;
+    for (let x = 0; x < width; x++) {
+      let index = (x + y * width) * 4;
+      let r = noise(xoff, yoff) * 255;
       pixels[index] = r;
       pixels[index + 1] = r;
-      pixels[index +2] = r;
+      pixels[index + 2] = r;
       pixels[index + 3] = 255;
+      xoff += inc;
     }
+    yoff+= inc;
   }
   updatePixels();
 }
