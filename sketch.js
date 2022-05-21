@@ -17,6 +17,8 @@ let currentVisualization = VISUALIZATION.PERLIN;
 let fft;
 
 // PERLIN NOISE VARIABLES
+let inc = 0.01;
+let start = 0
 let xoff1 = 0;
 let xoff2 = 10000;
 
@@ -84,13 +86,22 @@ function drawPerlin() {
   beginShape()
   stroke(255);
   noFill();
+  let xoff = start
   for (let x = 0; x < width; x++) {
     stroke(255);
-    vertex(x, random(height));
+    let n = map(noise(xoff), 0, 1, 0, height)
+    // you can also use the sin wave function to get an overall sin wave shape plus perlin noise interference
+    let s = map(sin(xoff), -1, 1, -50, 50)
+    let y  = s + n;
+    // let y = noise(xoff) * height;
+    vertex(x, y);
+    xoff += inc
   } 
   endShape();
 
-  noLoop();
+  start += inc;
+
+  // noLoop();
 
   // let x = map(noise(xoff1), 0, 1, 0, width);
   // let y = map(noise(xoff2), 0, 1, 0, height);
