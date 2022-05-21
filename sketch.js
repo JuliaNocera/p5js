@@ -17,7 +17,8 @@ let currentVisualization = VISUALIZATION.PERLIN;
 let fft;
 
 // PERLIN NOISE VARIABLES
-let xoff = 0;
+let xoff1 = 0;
+let xoff2 = 10000;
 
 function startAudio() {
   if(currentAudioSetting === AUDIO_SETTINGS.OFF) {
@@ -63,7 +64,7 @@ function gotSources(deviceList) {
 
 function keyPressed() {
   if ((key == 'P') || (key == 'p')) {
-  startAudio();
+    startAudio();
   }
 }
 
@@ -80,12 +81,13 @@ function draw() {
 }
 
 function drawPerlin() {
-  let x = map(noise(xoff), 0, 1, 0, width);
-  let y = map(noise(xoff), 0, 1, 0, height);
+  let x = map(noise(xoff1), 0, 1, 0, width);
+  let y = map(noise(xoff2), 0, 1, 0, height);
 
   // You can think about this number as the speed at which its "walking through" that Perlin noise graph
   // The bigger the number, the more it jumps ahead, the faster the new position is
-  xoff += 0.01;
+  xoff1 += 0.02;
+  xoff2 += 0.02;
 
   ellipse(x, y, 24, 24);
 }
