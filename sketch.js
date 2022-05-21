@@ -86,7 +86,8 @@ function draw() {
       let amp = spectrum[i];
       // range of spectrum array is between 0 & 255
       let y = map(amp, 0, 255, height, 0);
-      line(i*w, height, i * w, y)
+      // line(i*w, height, i * w, y)
+      rect(i * w, y, i * w, height - y)
     }
     stroke(255);
     noFill();
