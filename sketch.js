@@ -30,7 +30,7 @@ const AUDIO_SETTINGS = {
   ON: 'on'
 }
 
-const BANDS = 256;
+const BANDS = 64;
 
 let audioIn;
 let currentAudioSetting = AUDIO_SETTINGS.OFF;
@@ -49,7 +49,7 @@ function startAudio() {
 }
 
 function setup(){
-  createCanvas(768, 768);
+  createCanvas(800, 800);
   colorMode(HSB);
   angleMode(DEGREES);
 
@@ -82,23 +82,19 @@ function draw() {
     noStroke();
     // translate to the center
     translate(width / 2, height / 2);
-    beginShape();
+    // beginShape();
     for(let i = 0; i < spectrum.length; i++) {
       let angle = map(i,0,spectrum.length,0,360);
       let amp = spectrum[i];
       // set the radius to map that amplitude from 0 --> 256 to 40 --> 200
-      let r = map(amp, 0, 256, 40, 200);
+      let r = map(amp, 0, BANDS, 40, (width / 6.5));
       let x = r * cos(angle);
       let y = r * sin(angle);
-      vertex(x,y);
-      let color = amp + (Math.floor(Math.random() * 100)) < 255
-        ? amp + (Math.floor(Math.random() * 100))
-        : 255;
-      console.log(color)
-      stroke(color,255,255)
-      line(x,y)
+      // vertex(x,y);
+      stroke(i, 255, 255);
+      line(0, 0, x, y);
     }
-    endShape();
+    // endShape();
     stroke(255);
     noFill();
   }
