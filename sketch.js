@@ -12,7 +12,8 @@ const BANDS = 64;
 
 let audioIn;
 let currentAudioSetting = AUDIO_SETTINGS.OFF;
-let currentVisualization = VISUALIZATION.CIRCLE;
+// let currentVisualization = VISUALIZATION.CIRCLE;
+let currentVisualization = VISUALIZATION.PERLIN;
 let fft;
 
 function startAudio() {
@@ -25,15 +26,15 @@ function startAudio() {
 }
 
 function setup(){
-  createCanvas(800, 800);
 
   if (VISUALIZATION.CIRCLE) {
+    createCanvas(800, 800);
     colorMode(HSB);
     angleMode(DEGREES);
   }
 
   if (VISUALIZATION.PERLIN) {
-
+    createCanvas(400, 400);
   }
 
   audioIn = new p5.AudioIn();
@@ -60,17 +61,17 @@ function gotSources(deviceList) {
 function draw() {
   background(0);
   if (currentAudioSetting === AUDIO_SETTINGS.ON) {
-    if (VISUALIZATION.CIRCLE) {
+    if (currentVisualization === VISUALIZATION.CIRCLE) {
       drawCircleSpectrum();
     }
-    if (VISUALIZATION.PERLIN) {
+    if (currentVisualization === VISUALIZATION.PERLIN) {
       drawPerlin();
     }
   }
 }
 
 function drawPerlin() {
-
+  ellipse(200, 200, 24, 24);
 }
 
 function drawCircleSpectrum() {
