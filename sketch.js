@@ -30,9 +30,12 @@ const AUDIO_SETTINGS = {
   ON: 'on'
 }
 
+const BANDS = 64;
+
 let audioIn;
 let currentAudioSetting = AUDIO_SETTINGS.OFF;
 let fft;
+let w;
 // let amp;
 
 let volhistory = [];
@@ -57,7 +60,8 @@ function setup(){
   button = createButton('Play')
   button.mousePressed(startAudio);
 
-  fft = new p5.FFT(0.9, 256);
+  fft = new p5.FFT(0.9, BANDS);
+  w = width / BANDS
   fft.setInput(audioIn);
   // amp = new p5.Amplitude();
 }
@@ -82,7 +86,7 @@ function draw() {
       let amp = spectrum[i];
       // range of spectrum array is between 0 & 255
       let y = map(amp, 0, 255, height, 0);
-      line(i, height, i, y)
+      line(i*w, height, i * w, y)
     }
     stroke(255);
     noFill();
