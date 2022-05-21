@@ -81,10 +81,16 @@ function draw() {
 }
 
 function drawPerlin() {
+  beginShape()
+  stroke(255);
+  noFill();
   for (let x = 0; x < width; x++) {
     stroke(255);
-    point(x, random(height));
+    vertex(x, random(height));
   } 
+  endShape();
+
+  noLoop();
 
   // let x = map(noise(xoff1), 0, 1, 0, width);
   // let y = map(noise(xoff2), 0, 1, 0, height);
