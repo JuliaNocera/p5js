@@ -36,7 +36,6 @@ let audioIn;
 let currentAudioSetting = AUDIO_SETTINGS.OFF;
 let fft;
 let w;
-// let amp;
 
 let volhistory = [];
 
@@ -51,7 +50,7 @@ function startAudio() {
 
 function setup(){
   createCanvas(256, 256);
-  // colorMode(HSB);
+  colorMode(HSB);
   angleMode(DEGREES);
 
   audioIn = new p5.AudioIn();
@@ -61,9 +60,11 @@ function setup(){
   button.mousePressed(startAudio);
 
   fft = new p5.FFT(0.9, BANDS);
+
   w = width / BANDS
+
+  // tell fft that the audio input is our mic / audio in 
   fft.setInput(audioIn);
-  // amp = new p5.Amplitude();
 }
 
 function gotSources(deviceList) {
@@ -80,16 +81,18 @@ function draw() {
   background(0);
   if (currentAudioSetting === AUDIO_SETTINGS.ON) {
     let spectrum = fft.analyze()
-    console.log(spectrum)
-    // console.log(spectrum.length)
+    noStroke();
     for(let i = 0; i < spectrum.length; i++) {
       let amp = spectrum[i];
       // range of spectrum array is between 0 & 255
       let y = map(amp, 0, 255, height, 0);
-      // line(i*w, height, i * w, y)
-      rect(i * w, y, i * w, height - y)
+
+      // fill bars based on i
+      fill(i, 255, 255)
+      // subtract 2 from width to give a little space between the lines in visualizer
+      rect(i * w, y, w - 2, height - y)
     }
-    stroke(255);
+    // stroke(255);
     noFill();
   }
 }
