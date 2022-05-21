@@ -110,6 +110,8 @@ function drawExperiment() {
   for (let i = 0; i < spectrum.length; i++) {
     let angle = map(i, 0, spectrum.length, 0, 360);
     let amp = spectrum[i];
+    let n1 = map(noise(xoff1), 0, 1, 0, height)
+    let n2 = map(noise(xoff1), 0, 1, 0, width)
 
     // set the radius to map that amplitude from 0 --> 256 to 40 --> 200
     let r = map(amp, 0, BANDS, 40, (width / 6.5));
@@ -118,7 +120,9 @@ function drawExperiment() {
 
     stroke(amp, 255, 255);
     line(0, 0, x, y);
-    rect(noise(xoff1), noise(xoff2), x, y )
+    rect(0,0,x+n1,y+n2)
+    rect(0,0,x-n1,y-n2)
+    // rect(noise(xoff1), noise(xoff2), x, y )
     start += inc
   }
 
