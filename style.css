@@ -1,8 +1,18 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 canvas {
   display: block;
+}
+
+.container {
+  padding: 0;
+  margin: 0;
+  width: 1200px;
+  margin: 0 auto;
+  min-height: 100%;
+  background-color: red;
 }

@@ -5,7 +5,8 @@ const AUDIO_SETTINGS = {
 
 const VISUALIZATION = {
   CIRCLE: 'circle',
-  PERLIN: 'perlin'
+  PERLIN: 'perlin',
+  EXPERIMENT: 'exp'
 }
 
 const BANDS = 64;
@@ -13,14 +14,17 @@ const BANDS = 64;
 let audioIn;
 let currentAudioSetting = AUDIO_SETTINGS.OFF;
 // let currentVisualization = VISUALIZATION.CIRCLE;
-let currentVisualization = VISUALIZATION.PERLIN;
+// let currentVisualization = VISUALIZATION.PERLIN;
+let currentVisualization = VISUALIZATION.EXPERIMENT;
 let fft;
-
-// PERLIN NOISE VARIABLES
 let inc = 0.01;
-let start = 0
-let xoff1 = 0;
-let xoff2 = 10000;
+let start = 0;
+let xoff1 = start;
+let xoff2 = start + inc;
+let yoff1 = start;
+let yoff2 = start + inc;
+let h;
+let w;
 
 function startAudio() {
   if(currentAudioSetting === AUDIO_SETTINGS.OFF) {
@@ -34,7 +38,9 @@ function startAudio() {
 function setup(){
 
   if (VISUALIZATION.CIRCLE) {
-    createCanvas(800, 800);
+    h = document.getElementById("mainBody").offsetHeight
+    w = document.getElementById("mainBody").offsetWidth
+    createCanvas(w, h - 30);
     colorMode(HSB);
     angleMode(DEGREES);
   }
@@ -42,6 +48,14 @@ function setup(){
   if (VISUALIZATION.PERLIN) {
     createCanvas(200, 200);
     pixelDensity(1);
+  }
+
+  if (VISUALIZATION.EXPERIMENT) {
+    h = document.getElementById("mainBody").offsetHeight
+    w = document.getElementById("mainBody").offsetWidth
+    createCanvas(w, h - 30);
+    colorMode(HSB);
+    angleMode(DEGREES);
   }
 
   audioIn = new p5.AudioIn();
@@ -80,7 +94,36 @@ function draw() {
     if (currentVisualization === VISUALIZATION.PERLIN) {
       drawPerlin();
     }
+    if (currentVisualization === VISUALIZATION.EXPERIMENT) {
+     drawExperiment();
+    }
   }
+}
+
+function drawExperiment() {
+  let spectrum = fft.analyze()
+  noStroke();
+
+  // translate to the center
+  translate(width / 2, height / 2);
+
+  for (let i = 0; i < spectrum.length; i++) {
+    let angle = map(i, 0, spectrum.length, 0, 360);
+    let amp = spectrum[i];
+
+    // set the radius to map that amplitude from 0 --> 256 to 40 --> 200
+    let r = map(amp, 0, BANDS, 40, (width / 6.5));
+    let x = r * cos(angle);
+    let y = r * sin(angle);
+
+    stroke(amp, 255, 255);
+    line(0, 0, x, y);
+    rect(noise(xoff1), noise(xoff2), x, y )
+    start += inc
+  }
+
+  stroke(255);
+  noFill();
 }
 
 function drawPerlin() {
@@ -91,19 +134,26 @@ function drawPerlin() {
     if the y loop is outer loop, we get a horizontal streak
     
     changing the increment will make it a more or less smooth blur
+  
+    noiseDetail is the "octave" we are iterating over
+     - mess around with the two params in noiseDetail to control the quality of the noise
   */
-  for (let y = 0; y < height; y++) {
-    let xoff = 0;
-    for (let x = 0; x < width; x++) {
-      let index = (x + y * width) * 4;
-      let r = noise(xoff, yoff) * 255;
-      pixels[index] = r;
-      pixels[index + 1] = r;
-      pixels[index + 2] = r;
-      pixels[index + 3] = 255;
-      xoff += inc;
+  noiseDetail(4, 0.2)
+  let spectrum = fft.analyze()
+  for (let i = 0; i < spectrum.length; i++) {
+    for (let y = 0; y < height; y++) {
+      let xoff = 0;
+      for (let x = 0; x < width; x++) {
+        let index = (x + y * width) * 4;
+        let r = noise(xoff, yoff) * 255;
+        pixels[index] = spectrum[i];
+        pixels[index + 1] = r;
+        pixels[index + 2] = r;
+        pixels[index + 3] = 255;
+        xoff += inc;
+      }
+      yoff += inc;
     }
-    yoff+= inc;
   }
   updatePixels();
 }
