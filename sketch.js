@@ -88,7 +88,7 @@ function draw() {
       let y = map(amp, 0, 255, height, 0);
 
       // fill bars based on i
-      fill(i, 255, 255)
+      fill(amp, 255, 255)
       // subtract 2 from width to give a little space between the lines in visualizer
       rect(i * w, y, w - 2, height - y)
     }
