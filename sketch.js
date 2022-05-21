@@ -83,7 +83,7 @@ function draw() {
 function drawPerlin() {
   for (let x = 0; x < width; x++) {
     stroke(255);
-    point(x, 200);
+    point(x, random(height));
   } 
 
   // let x = map(noise(xoff1), 0, 1, 0, width);
