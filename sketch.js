@@ -16,6 +16,7 @@ let currentAudioSetting = AUDIO_SETTINGS.OFF;
 let currentVisualization = VISUALIZATION.PERLIN;
 let fft;
 
+// PERLIN NOISE VARIABLES
 let xoff = 0;
 
 function startAudio() {
@@ -79,13 +80,14 @@ function draw() {
 }
 
 function drawPerlin() {
-  // let x = random(width)
-
   let x = map(noise(xoff), 0, 1, 0, width);
+  let y = map(noise(xoff), 0, 1, 0, height);
 
+  // You can think about this number as the speed at which its "walking through" that Perlin noise graph
+  // The bigger the number, the more it jumps ahead, the faster the new position is
   xoff += 0.01;
 
-  ellipse(x, 200, 24, 24);
+  ellipse(x, y, 24, 24);
 }
 
 function drawCircleSpectrum() {
