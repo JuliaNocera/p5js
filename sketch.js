@@ -91,7 +91,7 @@ function draw() {
       let x = r * cos(angle);
       let y = r * sin(angle);
       // vertex(x,y);
-      stroke(i, 255, 255);
+      stroke(amp, 255, 255);
       line(0, 0, x, y);
     }
     // endShape();
