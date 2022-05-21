@@ -38,7 +38,7 @@ function setup(){
   }
 
   if (VISUALIZATION.PERLIN) {
-    createCanvas(400, 400);
+    createCanvas(5000, 1500);
   }
 
   audioIn = new p5.AudioIn();
@@ -81,19 +81,58 @@ function draw() {
 }
 
 function drawPerlin() {
-  for (let x = 0; x < width; x++) {
-    stroke(255);
-    point(x, random(height));
-  } 
+  let spectrum = fft.analyze()
+  stroke(255);
+  noFill();
+  // beginShape();
+  translate(width / 1.5, height / 1.4);
+  for (let i = 0; i < spectrum.length; i++) {
+    stroke(spectrum[i],255,255);
+    let angle = map(i, 0, spectrum.length, 0, 360);
+    let r = map(spectrum[i], 0, BANDS, 40, (width / 6.5));
+    // let x = (r * cos(angle)) * (width / 6.5);
+    // let y = (r * sin(angle)) * (height / 6.5);
+    let x = (width / 6.5) - (r * cos(angle))
+    let y = (height / 6.5) - (r * sin(angle))
+
+    // line(-(x * .5), -(y * -20), spectrum[i] - width * noise(xoff1), spectrum[i] - height * noise(xoff2))
+    // line(-(x * .5), -(y * -70), spectrum[i] - width * noise(xoff1), spectrum[i] - height * noise(xoff2))
+
+    // line(x * .5, y * -20, spectrum[i] - width * noise(xoff1), spectrum[i] - height * noise(xoff2))
+    // line(x * .5, y * -70, spectrum[i] - width * noise(xoff1), spectrum[i] - height * noise(xoff2))
+
+
+    line(x, y, width * noise(xoff1), height - spectrum[i] * noise(xoff2))
+    line(-x + 300, -y + 300, width * noise(xoff1), height - spectrum[i] * noise(xoff2))
+
+    line(x, y, spectrum[i] - width * noise(xoff1), spectrum[i] - height * noise(xoff2))
+    line(x, y, spectrum[i] - width * noise(xoff1), spectrum[i] - height * noise(xoff2))
+
+    // line(0,0, noise(x) * (width-100) + spectrum[i] + 100, noise(y) * (height/2) + (spectrum[i] - 100))
+    // line(-300,-300, noise(xoff2) * (width-200) + spectrum[x], noise(xoff1) * (height) +  (spectrum[x] - 200))
+    // line(0,0, noise(xoff2) * (width-300) + spectrum[x], noise(xoff1) * (height/3) + (spectrum[x] - 300))
+
+    // line(0,0, noise(xoff2) * (width+100) + spectrum[x], noise(xoff1) * (height/2) + (spectrum[x] + 100))
+    // line(0,0, noise(xoff2) * (width+200) + spectrum[x], noise(xoff1) * (height) +  (spectrum[x] + 200))
+    // line(0,0, noise(xoff2) * (width+300) + spectrum[x], noise(xoff1) * (height/3) + (spectrum[x] + 300))
+  }
+
+  // beginShape()
+  // for (let i = 0; i < spectrum.length; i++) {
+  //   vertex(xoff1,xoff2);
+  // }
+  // endShape();
+
+  // noLoop();
 
   // let x = map(noise(xoff1), 0, 1, 0, width);
   // let y = map(noise(xoff2), 0, 1, 0, height);
 
   // // You can think about this number as the speed at which its "walking through" that Perlin noise graph
   // // The bigger the number, the more it jumps ahead, the faster the new position is
-  // xoff1 += 0.02;
-  // xoff2 += 0.02;
 
+  xoff1 += 0.0001;
+  xoff2 += 0.0002;
   // ellipse(x, y, 24, 24);
 }
 
